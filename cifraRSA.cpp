@@ -100,15 +100,15 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 			if (testaPrimo(candidato1)){
 				mpz_cdiv_q(rop, n, candidato1);
 				if (mpz_cmp_ui(rop, 0)){
-					p = candidato1;
-					q = n / candidato1; // divisão inteira
+					mpz_set(p,candidato1);
+					mpz_div(q,n,candidato1); // divisão inteira
 				} // senão, não faço nada
 			}
 			if (testaPrimo(candidato2)){
 				mpz_cdiv_q(rop, n, candidato2);
 				if (mpz_cmp_ui(rop, 0)){
-					p = candidato2;
-					q = n / candidato2; // divisão inteira
+					mpz_set(p,candidato2);
+					mpz_div(q,n,candidato2); // divisão inteira
 				} // senão, não faço nada
 			}
 			mpz_add_ui(k,k,1);
@@ -129,24 +129,24 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 // cifrarRSA
 // decifrarRSA
 
-	int CifraRSA::cifrarRSA(mpz_t m, mpz_t e, mpz_t n){
-		mpz_t aux;
-		int mCifrado;
+	mpz_t CifraRSA::cifrarRSA(mpz_t m, mpz_t e, mpz_t n){
+		mpz_t mCifrado;
 		
 		mpz_init(aux);
-		mpz_powm (aux, m, e, aux);
-//		mpz_pow(aux,m,e);
-			
-	//	mCifrado = (m^e)% n;
+		mpz_powm(mCifrado, m, e, n);
 		
 		return mCifrado;
 	}
 
 	
 	int CifraRSA::decifrarRSA(int m, long int d, long int n){
+		mpz_t aux;
+		long int mDecifrado;
 		
-		long int mDecifrado;		
-		mDecifrado = (m^d) % n;
+		mpz_init(aux);
+		mpz_powm(aux, m, d, n);
+		
+		mDecifrado = mpz_get_ui(aux);
 
 		return mDecifrado;		
 	}

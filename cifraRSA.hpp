@@ -77,7 +77,7 @@ public:
 	 *     (d,n): chave privada
 	 * <-- m: inteiro (de grande dimensão) resultado da desencriptação de m=decifrarRSA(c,d,n)
 	 */
-	int decifrarRSA(mpz_t m, mpz_t d, mpz_t n); 
+	mpz_t decifrarRSA(mpz_t m, mpz_t d, mpz_t n); 
 	
 };
 
