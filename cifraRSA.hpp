@@ -70,7 +70,7 @@ public:
 	 *     (e,n): chave pública
 	 * <-- c: inteiro (de grande dimensão) resultado da encriptação de m, c=cifrarRSA(m,e,)
 	 */
-	int cifrarRSA(mpz_t m, mpz_t e, mpz_t n); 
+	mpz_t cifrarRSA(mpz_t m, mpz_t e, mpz_t n); 
 	
 	/* decifrar RSA 
 	 * --> c: inteiro (de grande dimensão), bloco da mensagem encriptada

@@ -139,7 +139,7 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 	}
 
 	
-	int CifraRSA::decifrarRSA(int m, long int d, long int n){
+	mpz_t CifraRSA::decifrarRSA(int m, long int d, long int n){
 		mpz_t aux;
 		long int mDecifrado;
 		
