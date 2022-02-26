@@ -1,8 +1,10 @@
 
-#include <iostream>
-#include <string.h>
 #include <gmp.h>
 #include <gmpxx.h>
+
+#include <iostream>
+#include <string.h>
+#include <vector>
 
 using namespace std;
 
@@ -12,9 +14,6 @@ bool testaPrimo(mpz_t cand) {
 	mpz_t i, remain;
 	mpz_inits (i, remain);
 	
-	
-	
-	//for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <=0; mpz_add(i, i,1) {
 	for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <=0;mpz_add_ui(i, i, 1)) {
 		
 		mpz_mod(remain,cand,i);
@@ -44,6 +43,7 @@ unsigned long int gcd(mpz_t m, mpz_t n){
 void chaves(mpz_t p ,mpz_t q){
 	
 	bool encontrou;
+	long long int j=0;
 	mpz_t n, e;
 	mpz_t fi,i,k,size;
 	mpz_inits(n,e,fi,i,k,size);
@@ -60,26 +60,36 @@ void chaves(mpz_t p ,mpz_t q){
 	while(i<fi){
 		if(gcd(i,fi)==1)
 			mpz_add_ui(k,k,1);
-			mpz_add_ui(i,i,1);
-		
+			mpz_add_ui(i,i,1);	
 		}
 	
-	int coprimos[10000];
+	std::vector<mpz_t> coprimos;
+	
+	
+	//int coprimos[10000];
 	mpz_set(size,k);
 	mpz_set_ui(k, 0);
 	for (mpz_set_ui(i,2);mpz_cmp(i,fi) <0;mpz_add_ui(i, i, 1)) {
 	
 		if(gcd(i,fi)==1){
-			mpz_set(coprimos[k],i);
-			mpz_add_ui(k,k,1);
+			mpz_init(coprimos.at(j));
+			mpz_set(coprimos.at(j),i);
+			j++;
+			//mpz_add_ui(k,k,1);
 		}
 	}
 	
 	// Escolha de um 'e' aleatorio 
 	if(mpz_cmp_ui(size,1)< 0){
-		mpz_set_ui(e,coprimos[rand() % (size -1)]);
+		mpz_t rop;
+		
+		gmp_randstate_t rstate;
+		gmp_randinit_mt(rstate);
+		mpz_urandomm(rop, rstate, size-1);
+
+		mpz_set(e,coprimos.at(mpz_get_ui(rop)));
 		} else{
-				mpz_set_ui(e, coprimos[0]);
+				mpz_set(e,coprimos.at(0));
 			}
 	mpz_set_ui(k,1);
 	

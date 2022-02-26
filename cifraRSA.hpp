@@ -49,7 +49,7 @@ public:
 	 * --> n: inteiro, produto de dois primos
 	 * <-- p,q: inteiros, primos tais que pq = n
 	 */
-	void formulaGeradora(mpz_t n, mpz_t *p, mpz_t *q);
+	void formulaGeradora(mpz_t n, mpz_t p, mpz_t q);
 	
 	// Método de Fermat
 	void metodoFermat(mpz_t n, mpz_t *p, mpz_t *q);

@@ -1,8 +1,8 @@
 
 #include <gmp.h>
-#include <iostream>
-
+#include <vector>
 #include "cifraRSA.hpp"
+#include <iostream>
 
 // ===//Funções Auxiliares (private)//===
  
@@ -33,11 +33,12 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 	// lista de primos até n (inclusivé)
 	
 	mpz_t i;
-	mpz_t candidatos[comprimentoVector];
+	std::vector<mpz_t> candidatos;
+	//mpz_t candidatos[comprimentoVector];
 	contaPrimos = 0;
 	
 	for(mpz_init_set(i,0); mpz_cmp_ui(i,comprimentoVector)<0; mpz_add_ui(i,i,1))
-	//	mpz_set(candidatos[i],i+2);
+		mpz_set(candidatos.at(mpz_get_ui(i)),i+2);
 	
 	/*  
 	 *  inicializar, candidatos[2,3,4,5,6,7,...,n]
@@ -73,40 +74,49 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 	 * --> n: natural factor de dois primos
 	 * <-- p,q: naturais, tais que n=p*q
 	 */
-	void CifraRSA::formulaGeradora(mpz_t n, mpz_t *p, mpz_t *q){
+	void CifraRSA::formulaGeradora(mpz_t n, mpz_t p, mpz_t q){
 		
-		mpz_t k, aux,sqrtAux; 
-		mpz_t candidato1,candidato2;
+		mpf_t sqrtAux;
+		mpz_t k,aux,ceilZ,candidato1,candidato2, rop;
+		mpz_inits(candidato1,candidato2,rop);
+		
 		mpz_init_set_ui(k,1);
 		mpz_mul_ui(aux,k,6);
 		mpz_init_set(aux,aux+1);
-		mpz_sqrt(sqrtAux,n);
-		mpf_t ceilAux;
-		mpf_init_set_uf(ceilAux,mpf_ceil(sqrtAux));
-		while ( mpz_cmp_ui(aux,ceil(mpz_sqrt(n)))==0) {
+		mpf_sqrt_ui(sqrtAux,mpz_get_ui(n));
+		mpf_ceil(sqrtAux,sqrtAux);
+		
+		//mpf_init_set_uf(ceilAux,mpf_ceil(sqrtAux));
+		mpz_init_set_ui(ceilZ,mpf_get_ui(sqrtAux));
+		
+		while (mpz_cmp(aux,ceilZ)==0) {
 			// gera potenciais primos através da fórmula 6k+-1
-			candidato1 = 6*k-1;
-			candidato2 = 6*k+1;
+			mpz_mul_ui (k, k, 6);
+			mpz_set(candidato1,k-1);
+			mpz_set(candidato2,k+1);
+
 			
 			// verifica se cada um dos candidatos é, ou não primo
 			if (testaPrimo(candidato1)){
-				if ( n % candidato1 == 0){
-					*p = candidato1;
-					*q = n / candidato1; // divisão inteira
+				mpz_cdiv_q(rop, n, candidato1);
+				if (mpz_cmp_ui(rop, 0)){
+					p = candidato1;
+					q = n / candidato1; // divisão inteira
 				} // senão, não faço nada
 			}
 			if (testaPrimo(candidato2)){
-				if ( n % candidato2 == 0){
-					*p = candidato2;
-					*q = n / candidato2; // divisão inteira
+				mpz_cdiv_q(rop, n, candidato2);
+				if (mpz_cmp_ui(rop, 0)){
+					p = candidato2;
+					q = n / candidato2; // divisão inteira
 				} // senão, não faço nada
 			}
-			k++;
+			mpz_add_ui(k,k,1);
 		}
 	}
 	
 
-	void CifraRSA::metodoFermat(long int n, long int *p, long int *q){
+	void CifraRSA::metodoFermat(mpz_t n, mpz_t *p, mpz_t *q){
 	// 
 	
 	}
@@ -119,13 +129,19 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 // cifrarRSA
 // decifrarRSA
 
-	int CifraRSA::cifrarRSA(int m, long int e, long int n){
+	int CifraRSA::cifrarRSA(mpz_t m, mpz_t e, mpz_t n){
+		mpz_t aux;
 		int mCifrado;
+		
+		mpz_init(aux);
+		mpz_powm (aux, m, e, aux);
+//		mpz_pow(aux,m,e);
 			
-		mCifrado = (m^e)% n;
+	//	mCifrado = (m^e)% n;
 		
 		return mCifrado;
 	}
+
 	
 	int CifraRSA::decifrarRSA(int m, long int d, long int n){
 		
