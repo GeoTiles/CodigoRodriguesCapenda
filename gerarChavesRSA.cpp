@@ -1,6 +1,5 @@
 
 #include <gmp.h>
-#include <gmpxx.h>
 
 #include <iostream>
 #include <string.h>

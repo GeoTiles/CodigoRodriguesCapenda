@@ -13,7 +13,7 @@ char CifraRSA::toChar(int c){
 int CifraRSA::toAscii(char m ){
 	
 	return static_cast<int>(m);
-	
+		
 	}
 bool CifraRSA::testaPrimo(mpz_t cand) {
 	mpz_t i, aux;
@@ -129,26 +129,13 @@ void CifraRSA::crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]){
 // cifrarRSA
 // decifrarRSA
 
-	mpz_t CifraRSA::cifrarRSA(mpz_t m, mpz_t e, mpz_t n){
-		mpz_t mCifrado;
-		
-		mpz_init(aux);
+	void CifraRSA::cifrarRSA(mpz_t mCifrado, mpz_t m, mpz_t e, mpz_t n){
 		mpz_powm(mCifrado, m, e, n);
-		
-		return mCifrado;
 	}
 
 	
-	mpz_t CifraRSA::decifrarRSA(int m, long int d, long int n){
-		mpz_t aux;
-		long int mDecifrado;
-		
-		mpz_init(aux);
-		mpz_powm(aux, m, d, n);
-		
-		mDecifrado = mpz_get_ui(aux);
-
-		return mDecifrado;		
+	void CifraRSA::decifrarRSA(mpz_t mDecifrado, mpz_t m, mpz_t d, mpz_t n){
+		mpz_powm(mDecifrado, m, d, n);
 	}
 
 //===(fim)Cifra RSA===//

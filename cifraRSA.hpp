@@ -70,14 +70,14 @@ public:
 	 *     (e,n): chave pública
 	 * <-- c: inteiro (de grande dimensão) resultado da encriptação de m, c=cifrarRSA(m,e,)
 	 */
-	mpz_t cifrarRSA(mpz_t m, mpz_t e, mpz_t n); 
+	void cifrarRSA(mpz_t mCifrado, mpz_t m, mpz_t e, mpz_t n); 
 	
 	/* decifrar RSA 
 	 * --> c: inteiro (de grande dimensão), bloco da mensagem encriptada
 	 *     (d,n): chave privada
 	 * <-- m: inteiro (de grande dimensão) resultado da desencriptação de m=decifrarRSA(c,d,n)
 	 */
-	mpz_t decifrarRSA(mpz_t m, mpz_t d, mpz_t n); 
+	void decifrarRSA(mpz_t mDecifrado, mpz_t m, mpz_t d, mpz_t n); 
 	
 };
 

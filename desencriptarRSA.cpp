@@ -1,6 +1,7 @@
 // Copyright (c) 2021
 // versão 2.0 desenvolvido Doutor Pedro Quaresma
 
+#include <gmp.h>
 #include "cifraRSA.hpp"
 #include <iostream>
 #include <stdio.h>
@@ -25,8 +26,8 @@ int main(int argc, char *argv[]){
   
   FILE *fl,*fe;
   char *mensnormal, *menscifrada, ch;
-  int m;
-  long int d, n;
+  mpz_t d, n,m,mRSA;
+  mpz_inits(d,n,m,mRSA);
   CifraRSA decifrador;
   
   
@@ -35,8 +36,9 @@ int main(int argc, char *argv[]){
     
   // n 
   
-  d = atoi(argv[2]);
-  n = atoi(argv[3]);
+  
+  mpz_set_ui(d,atoi(argv[2]));
+  mpz_set_ui(n,atoi(argv[3]));
   
   
 
@@ -64,9 +66,11 @@ int main(int argc, char *argv[]){
   // Encriptar da mensagem
 	
 	while (!feof(fl)){
+		
 		ch = fgetc(fl);
-		m = decifrador.toAscii(ch);
-		fputc(decifrador.toChar(decifrador.decifrarRSA(m,d,n)), fe);	
+		mpz_set_ui(m,decifrador.toAscii(ch));
+		decifrador.decifrarRSA(mRSA,m,d,n);
+		fputc(decifrador.toChar(mpz_get_ui(mRSA)), fe);
 		}
   
   //Fechar os ficheiros

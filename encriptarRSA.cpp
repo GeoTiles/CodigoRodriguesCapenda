@@ -26,16 +26,16 @@ int main(int argc, char *argv[]){
   
   FILE *fl,*fe;
   char *mensnormal, *menscifrada, ch;
-  int m;
-  mpz_t e, n;
-  mpz_inits(e,n);
+ 
+  mpz_t e, n,m,mRSA;
+  mpz_inits(e,n,m,mRSA);
   CifraRSA cifrador;
   
   
   //cópia do ficheiro de entrada
   mensnormal = argv[1];
     
-  // n 
+  // 
   
 	mpz_set_ui(e,atoi(argv[2]));
     mpz_set_ui(n,atoi(argv[3]));
@@ -65,8 +65,10 @@ int main(int argc, char *argv[]){
 	
 	while (!feof(fl)){
 		ch = fgetc(fl);
-		m = cifrador.toAscii(ch);
-		fputc(cifrador.toChar(cifrador.cifrarRSA(m,e,n)), fe);
+		mpz_set_ui(m,cifrador.toAscii(ch));
+		cifrador.cifrarRSA(mRSA,m,e,n);
+		cifrador.toChar(mpz_get_ui(mRSA));
+		fputc(cifrador.toChar(mpz_get_ui(mRSA)), fe);
 	
 		}
   
