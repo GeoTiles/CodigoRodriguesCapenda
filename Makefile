@@ -6,18 +6,18 @@ OPC = -Wall -lm -lgmp
 .PHONY: clean all
 
 
-all: encriptarRSA desencriptarRSA  quebrarRSA
+all: encriptarRSA desencriptarRSA gerarChavesRSA
 
 clean:
-	-rm *.o encriptarRSA desencriptarRSA  quebrarRSA
+	-rm *.o encriptarRSA desencriptarRSA gerarChavesRSA
 
 
 
-#gerarChavesRSA: gerarChavesRSA.cpp cifraRSA.o
-#	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
+gerarChavesRSA: gerarChavesRSA.cpp cifraRSA.o
+	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
 
-encriptarRSA: encriptarRSA.cpp cifraRSA.o gerarChavesRSA.o 
-	${CC} -o $@ $@.cpp cifraRSA.o gerarChavesRSA.o ${OPC}
+encriptarRSA: encriptarRSA.cpp cifraRSA.o
+	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
 
 desencriptarRSA: desencriptarRSA.cpp cifraRSA.o 
 	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}

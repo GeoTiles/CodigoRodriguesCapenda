@@ -7,15 +7,15 @@
 
 using namespace std;
 
- 
+
 
 bool testaPrimo(mpz_t cand) {
-	mpz_t i, remain;
-	mpz_inits (i, remain);
-	
-	for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <=0;mpz_add_ui(i, i, 1)) {
-		
-		mpz_mod(remain,cand,i);
+  mpz_t i, remain;
+  mpz_inits (i, remain);
+  
+  for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <=0;mpz_add_ui(i, i, 1)) {
+    
+    mpz_mod(remain,cand,i);
 		if (mpz_cmp_ui(remain,0) == 0) {
 			return false;
 		}
@@ -111,20 +111,20 @@ void chaves(mpz_t p ,mpz_t q){
 	cout<<"\n A chave privada é ("<< e << ","<< n <<")" << endl;
 	}
 	
-	int main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 		
-		mpz_t p,q;
-		mpz_inits(p,q);
-		mpz_set_ui(p,atoi(argv[1]));
-		mpz_set_ui(q,atoi(argv[2]));
-
-		  if(!testaPrimo(p) || !testaPrimo(q)){
-			  std::cout << "Valor de p ou q inválidos" << std::endl << "Entre com  números primos";
-			return 0;
-			}
-			
-		
-		return 0;
-		}
+  mpz_t p,q;
+  mpz_inits(p,q);
+  mpz_set_ui(p,atoi(argv[1]));
+  mpz_set_ui(q,atoi(argv[2]));
+  
+  if(!testaPrimo(p) || !testaPrimo(q)){
+    std::cout << "Valor de p ou q inválidos" << std::endl << "Entre com  números primos";
+    return 0;
+  }
+  
+  
+  return 0;
+}
 
 
