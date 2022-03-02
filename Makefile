@@ -13,8 +13,8 @@ clean:
 
 
 
-gerarChavesRSA: gerarChavesRSA.cpp cifraRSA.o
-	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
+gerarChavesRSA: gerarChavesRSA.cpp 
+	${CC} -o $@ $@.cpp ${OPC}
 
 encriptarRSA: encriptarRSA.cpp cifraRSA.o
 	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
