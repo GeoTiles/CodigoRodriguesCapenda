@@ -1,80 +1,58 @@
-// Copyright (c) 2021, Pedro Quaresma <pedro@mat.uc.pt>
+#include <iostream>
 
+#include <cstdio>
+#include <cstdlib>
 
 #include <gmp.h>
 
-#include "cifraRSA.hpp"  
-#include <iostream>
-#include <stdlib.h>
+#include "cifraRSA.hpp"
 
 using namespace std;
 
+int main(int argc, char *argv[]) {
+  //Declaracao de variaveis
+  FILE *pfM, *pfC, *CPublica;
+  char *msginicial,*msgfinal, *chavePub;
+  char str_e[COMPCHAVES], str_d[COMPCHAVES], str_n[COMPCHAVES]; 
+  mpz_t e, d, n;
 
+  CifraRSA cfr;
+  
+  mpz_init(e); //inicializacao de e
+  mpz_init(n); //inicializacao de n
 
-int main(int argc, char *argv[]){
-
-  //verificar o número de argumento
-  if(argc!=5){
-    cout << "\n Utilização: ./encriptarCP nomeFicheiroEntrada e d nomeFicheiroSaida\n\n"; 
+  if (argc < 4){ 
+    cout << "\nUtilizacao: ./encriptarRSA <ficheiro_chave_pública> <ficheiro_texto_claro> <ficheiro_texto_cifrado>\n\n";
     return(1);
   }
   
-  //Declaração das variáveis
-  
-  //fl -> o ficheiro de entrada(leitura) 
-  //fe -> o ficheiro de saida(escrita) 
-  
-  FILE *fl,*fe;
-  char *mensnormal, *menscifrada, ch;
- 
-  mpz_t e, n,m,mRSA;
-  mpz_inits(e,n,m,mRSA);
-  CifraRSA cifrador;
-  
-  
-  //cópia do ficheiro de entrada
-  mensnormal = argv[1];
-    
-  // 
-  
-	mpz_set_ui(e,atoi(argv[2]));
-    mpz_set_ui(n,atoi(argv[3]));
-  
-  
-  //cópia do ficheiro de saida
-  menscifrada = argv[4];
-  
-  
-  //abrir o ficheiro para a leitura
-  fl = fopen(mensnormal,"r");
-  
-  //verificar se o ficheiro foi aberto ou nao
-  //caso contrario o programa termina
-  if(fl == NULL){
-    cout << "Impossível abrir o ficheiro " << mensnormal << endl;
+  // obtem os argumentos da linha de comando
+  chavePub = argv[1];
+  msginicial = argv[2];
+  msgfinal = argv[3];
+
+  if ((CPublica=fopen(chavePub,"r")) == NULL){
+    cout << "Não foi possível abrir o ficheiro, " << chavePub << ",contendo a Chave Pública,  para leitura\n";
     return(2);
-  }
-
-  //Abrir o ficheiro para escrever a mensagem cifrada
-  if((fe = fopen(menscifrada,"w")) == NULL){
-    cout << "Impossível criar o ficheiro " << menscifrada << endl;
+  }  
+  if ((pfM = fopen(msginicial,"r")) == NULL) {
+    cout << "Não foi possível abrir o ficheiro do texto inicial, " << msginicial << ", para leitura\n";
     return(3);
-  }
+  } else if ((pfC = fopen(msgfinal,"w")) == NULL) {
+    cout << "Não foi possível abrir o ficheiro do texto cifrado, " << msgfinal << ", para escrita\n";
+    return(4);
+  }          
 
-  // Encriptar da mensagem
-	
-	while (!feof(fl)){
-		ch = fgetc(fl);
-		mpz_set_ui(m,cifrador.toAscii(ch));
-		cifrador.cifrarRSA(mRSA,m,e,n);
-		cifrador.toChar(mpz_get_ui(mRSA));
-		fputc(cifrador.toChar(mpz_get_ui(mRSA)), fe);
-	
-		}
-  
-  //Fechar os ficheiros
-  fclose(fl);
-  fclose(fe);
+  fscanf(CPublica,"%s %s ", str_e, str_n);
+  fclose(CPublica);
+  mpz_set_str(e, str_e, 0);
+  mpz_set_str(n, str_n, 0);
+  cfr.tratablocoE(pfM, pfC, e, n);
+
+  fclose(pfM);
+  fclose(pfC);
+
   return(0);
-  
-}
+} 
+
+    

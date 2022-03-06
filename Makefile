@@ -1,26 +1,19 @@
-# RSA
+.PHONY: all clean
 
-CC	= g++
-OPC = -Wall -lm -lgmp
+objects = cifraRSA.o 
+CC = g++
+LIBS = gmp
 
-.PHONY: clean all
+all: encriptarRSA desencriptarRSA geraChavesRSA
 
+geraChavesRSA: geraChavesRSA.cpp $(objects)
+	$(CC) -o $@ $@.cpp  $(objects) -l$(LIBS)
 
-all: encriptarRSA desencriptarRSA gerarChavesRSA
+encriptarRSA: encriptarRSA.cpp $(objects)
+	$(CC) -o $@ $@.cpp $(objects) -l$(LIBS)
+
+desencriptarRSA: desencriptarRSA.cpp $(objects)
+	$(CC) -o $@ $@.cpp $(objects) -l$(LIBS)
 
 clean:
-	-rm *.o encriptarRSA desencriptarRSA gerarChavesRSA
-
-
-
-gerarChavesRSA: gerarChavesRSA.cpp 
-	${CC} -o $@ $@.cpp ${OPC}
-
-encriptarRSA: encriptarRSA.cpp cifraRSA.o
-	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
-
-desencriptarRSA: desencriptarRSA.cpp cifraRSA.o 
-	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
-
-quebrarRSA: quebrarRSA.cpp cifraRSA.o
-	${CC} -o $@ $@.cpp cifraRSA.o ${OPC}
+	rm -f  encriptarRSA desencriptarRSA geraChavesRSA chavePublica chavePrivada *.o

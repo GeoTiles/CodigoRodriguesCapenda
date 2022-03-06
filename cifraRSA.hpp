@@ -1,84 +1,74 @@
-/*
- * Cifra RSA
- *
- * Criptoan·lise da cifra RSA
- */
 
-#include <gmp.h>
-#include <cstdio> // para poder usar FILE
-#include <cmath>  // sqrt
+#ifndef CHAVESRSA
+#define CHAVESRSA
 
-#ifndef CIFRARSA
-#define CIFRARSA
+#define COMPCHAVES 1500
 
 class CifraRSA {
-private:
-
-    int comprimentoVector = 5000;
-
 public:
-	/*
-	 * Converte um char para int
-	 * --> ch: char
-	 * <-- m: inteiro referente ao numero Ascii do char ch
-     */
-	int toAscii(char m);
-	char toChar(int m);
-    /*
-	 * Verifica se um dado natural È primo
-	 * --> cand: natural
-	 * <-- p: p=true, n È primo, p=false, n„o È primo
-     */
-	bool testaPrimo(mpz_t);	
 
-	/*
-	 * Crivo de Eratostenes
-	 * --> n: inteiro
-	 * <-- primos: vector de inteiros, contendo os primos atÈ n (inclusivÈ)
-	 */
-	void crivoEratostenes(mpz_t n, mpz_t *contaPrimos, mpz_t primos[]); 
-	/* 
-	 * MÈtodo das Divisıes --- Criptoan·lise da cifra RSA
-	 * Utiliza o Crivo de Eratostenes para obter uma lista de primos a testar
-	 * --> n: inteiro, produto de dois primos
-	 * <-- p,q: inteiros, primos tais que pq = n
-	 */
-	void metodoDivisoes(mpz_t n, mpz_t *p, mpz_t *q);	
-	/* 
-	 * MÈtodo da fÛrmula geradora de primos 6k+-1 --- Criptoan·lise da cifra RSA
-	 * --> n: inteiro, produto de dois primos
-	 * <-- p,q: inteiros, primos tais que pq = n
-	 */
-	void formulaGeradora(mpz_t n, mpz_t p, mpz_t q);
-	
-	// MÈtodo de Fermat
-	void metodoFermat(mpz_t n, mpz_t *p, mpz_t *q);
-	
-	/*
-	 *  Gerar das Chaves
-	 * --> p, q: primos (de grande dimens„o)
-	 * <-- (e,n),(d,n): n=p*q, (e,n) - chave p˙blica, (d,n) - chave privada
-	 */
-	void gerarChavesRSA(mpz_t p, mpz_t q, mpz_t *n, mpz_t *e, mpz_t *d);
-	
-	/*
-	 * Gerar um primo (de grande dimens„o) --- crivo de Eratostenes
-	 */
-	 
-	/* cifrar RSA
-	 * --> m: inteiro (de grande dimens„o), bloco da mensagem
-	 *     (e,n): chave p˙blica
-	 * <-- c: inteiro (de grande dimens„o) resultado da encriptaÁ„o de m, c=cifrarRSA(m,e,)
-	 */
-	void cifrarRSA(mpz_t mCifrado, mpz_t m, mpz_t e, mpz_t n); 
-	
-	/* decifrar RSA 
-	 * --> c: inteiro (de grande dimens„o), bloco da mensagem encriptada
-	 *     (d,n): chave privada
-	 * <-- m: inteiro (de grande dimens„o) resultado da desencriptaÁ„o de m=decifrarRSA(c,d,n)
-	 */
-	void decifrarRSA(mpz_t mDecifrado, mpz_t m, mpz_t d, mpz_t n); 
-	
+  // M√©todos para a Gera√ß√£o de Chaves
+  
+  /* 
+   * Gera um primo aleat√≥rio
+   * --> ???
+   *     seed, valor inicial (semente) para o gerador de n√∫meros aleat√≥rios
+   * <-- string com o n√∫mero primo gerado
+   */
+  char* randomprime(char fmt[], unsigned long seed, unsigned long n);
+
+  
+  /*
+   * Gera as chaves RSA
+   * --> primos 
+   *     ponteiros para os ficheiros
+   * <-- (e,n) e (d,n), chaves p√∫blicas, escritas nos ficheiros respectivos   
+   */
+  void gerarchaves(char str_p[], char str_q[], char str_e[], char str_d[], char str_n[]);
+  
+  /*
+   * Chama por duas vezes o gerador de n√∫meros primos e depois chama a fun√ß√£o de gera√ß√£o de chaves 
+   * --> Ponteiros para os ficheiros de escrita
+   *     n√∫mero de bits dos primos gerados
+   * <-- As chaves, escritas nos ficheiros dados
+   */
+  void geradorChaves(FILE *,FILE *,int);
+
+
+  // M√©todos para a implementa√ß√£o da Cifra RSA
+  
+  /*
+   *
+   */
+  int mod(int numero, int base);
+
+  /*
+   *
+   */
+  void escreveBloco(FILE *pfC, mpz_t bloco);
+
+  /*
+   *
+   */
+  void encriptar(FILE *pfC,mpz_t bloco, mpz_t e, mpz_t n);
+
+  /*
+   *
+   */
+  void desencriptar(FILE *pfC, mpz_t bloco, mpz_t d, mpz_t n);
+
+  /*
+   *
+   */
+  void tratablocoE(FILE *pfM, FILE *pfC,mpz_t e,mpz_t n);
+
+  /*
+   *
+   */
+  void tratablocoD(FILE *pfM, FILE *pfC,mpz_t d,mpz_t n);
+
+
+  
 };
 
 #endif

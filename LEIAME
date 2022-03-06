@@ -1,0 +1,78 @@
+Notas:
+
+ pedro@fenix: --- é a linha de comando no meu computador (que se chama «fenix»)
+
+ O exemplo com chaves de 8bits só foi feito para efeitos de
+ simplificação deste texto, obviamente que se pretende chaves com 512
+ ou mais bits.
+
+ Para efeitos de testar os diferentes algoritmos de factorização dos
+ números primos os diferentes valores para o número de bits deve ser
+ usado, como forma de testar os limites das diferentes aproximações.
+
+
+1) Gerar as chaves
+
+   pedro@fenix: ./geraChavesRSA 
+
+   Utilizacao: geraChavesRSA <nome_ficheiro_chave_pública> <nome_ficheiro_chave_privada> <num_bits_chave>
+
+Exemplo com uma chave de 8bits
+
+   pedro@fenix: ./geraChavesRSA chPub chPriv 8
+
+
+Quando tudo corre bem não há nenhuma mensagem de saída, simplesmente
+os dois ficheiros referentes às chaves públicas e privadas, são
+gerados.
+
+Podemos ver o seu conteúdo com o comando «more»
+
+   pedro@fenix: more chPub
+   3
+   187 
+
+   pedro@fenix: more chPriv 
+   107
+   187
+
+2) Encriptar
+
+   pedro@fenix: ./encriptarRSA 
+
+   Utilizacao: ./encriptarRSA <ficheiro_chave_pública> <ficheiro_texto_claro> <ficheiro_texto_cifrado>
+
+Por exemplo
+
+   pedro@fenix: ./encriptarRSA chPub msg.txt cfr.txt
+
+quando tudo corre bem não há nenhuma mensagem de saída, simplesmente o
+ficheiro com a mensagem, texto claro, é lido, encriptado e o texto
+contendo a mensagem encriptada é criado.
+
+3) Desencriptar
+
+   pedro@fenix: ./desencriptarRSA 
+
+   Utilizacao: ./desencriptarRSA <ficheiro_chave_privada> <ficheiro_texto_cifrado> <ficheiro_texto_decifrado>
+
+Por exemplo
+
+   pedro@fenix: ./desencriptarRSA chPriv cfr.txt dcfr.txt 
+
+quando tudo corre bem não há nenhuma mensagem de saída, simplesmente o
+ficheiro com a mensagem, encriptada, é lido, desencriptado e o texto
+contendo a mensagem desencriptada é criado.
+
+4) Funcionamento global
+
+ 4.1) A Ana gera as suas chaves pública/privada
+
+ 4.2) A Ana publicita a sua chave pública (guarda a privada)
+
+ 4.3) O Rui obtém a chave pública de Ana
+
+ 4.4) O Rui cifra a mensagem (a enviar à Ana) com a chave pública da Ana
+
+ 4.5) Ana decifra a mensagem (enviada pelo Rui) com a sua chave privada.
+
