@@ -1,10 +1,10 @@
 // Copyright (c) 2021, Pedro Quaresma <pedro@mat.uc.pt>
 
 
+#include <gmp.h>
 
 #include "cifraRSA.hpp"  
 #include <iostream>
-#include <ostream>
 #include <stdlib.h>
 
 using namespace std;
@@ -12,6 +12,9 @@ using namespace std;
 
 
 int main(int argc, char *argv[]){
+
+
+  
 
   //verificar o número de argumento
   if(argc!=2){
@@ -21,12 +24,14 @@ int main(int argc, char *argv[]){
   
   //Declaração das variáveis
   int op;
-  long int n,p,q;
+  mpz_t n;
   CifraRSA cifrador;
   
 
   //   
-  n = atoi(argv[1]);
+  mpz_init(n);
+  mpz_set_ui(n,atoi(argv[1]));
+
   
   
   //Menu
@@ -40,7 +45,7 @@ int main(int argc, char *argv[]){
   //Tratamento da opção
   switch(op){
 	case 1:
-		cifrador.metodoDivisoes(n,&p,&q); 
+		cifrador.metodoDivisoes(n); 
 		break;
 	case 2:
 		cifrador.metodoFermat(n,&p,&q); 

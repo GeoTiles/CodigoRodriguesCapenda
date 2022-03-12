@@ -240,3 +240,50 @@ void  CifraRSA::tratablocoD(FILE *pfM, FILE *pfC,mpz_t d,mpz_t n){
   mpz_clear(bloco);
   mpz_clear(aux);
 }
+
+
+bool CifraRSA::testaPrimo(mpz_t cand){
+  
+  mpz_t i, remain;
+  mpz_inits (i, remain, NULL);
+  
+  for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <= 0; mpz_add_ui(i, i, 1)) {
+    
+    mpz_mod(remain,cand,i);
+    if (mpz_cmp_ui(remain,0) == 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
+void  CifraRSA::metodoEuclides(mpz_t n){
+	mpz_t min,max,product,p,q;
+	mpz_inits(min,max,product,p,q);
+	
+	mpz_set_ui(min,3);
+	mpz_sqrt(max,n);
+	mpz_set_ui(product,1);
+	
+	while(mpz_cmp(min,max)<0){ 
+		if(testaPrimo(min)){
+			mpz_mul(product,product,min);
+			}else
+				mpz_add_ui(min,min,1);
+			mpz_add_ui(min,min,1);
+		}
+			
+	mpz_gcd (p,n,product);	
+	mpz_cdiv_q (q, n, p);	
+		
+	}
+void CifraRSA::metodoFermat(mpz_t n){
+	
+	
+	/*
+	 * implementando
+	 */
+	
+	}

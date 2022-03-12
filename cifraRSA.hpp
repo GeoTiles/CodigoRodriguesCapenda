@@ -68,7 +68,23 @@ public:
   void tratablocoD(FILE *pfM, FILE *pfC,mpz_t d,mpz_t n);
 
 
-  
+  /*
+   * Métodos para Cripto análise
+   * 
+   */
+   
+   bool testaPrimo(mpz_t cand);
+   
+   
+   /*
+    * Método das divisões
+    */
+   
+   void metodoEuclides(mpz_t n);
+   
+   void metodoFermat(mpz_t n);
+   
+   
 };
 
 #endif
