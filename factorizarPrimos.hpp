@@ -4,7 +4,7 @@
 
 #define COMPCHAVES 1500
 
-class CifraRSA {
+class FactorizarPrimos {
 public:
   /*
    * Métodos para Cripto análise

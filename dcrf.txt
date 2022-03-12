@@ -1,0 +1,7 @@
+Prezado professor,
+
+Estou usando o código do professor
+Já tenho o algoritmo de decomposição
+agora passei para a etapa de rescrevê-lo
+usando ele unsado o GMP
+�
