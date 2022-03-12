@@ -82,7 +82,7 @@ public:
    
    void metodoEuclides(mpz_t n);
    
-   void metodoFermat(mpz_t n);
+   bool metodoFermat(mpz_t n);
    
    
 };

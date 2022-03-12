@@ -279,11 +279,37 @@ void  CifraRSA::metodoEuclides(mpz_t n){
 	mpz_cdiv_q (q, n, p);	
 		
 	}
-void CifraRSA::metodoFermat(mpz_t n){
+bool CifraRSA::metodoFermat(mpz_t n){
+	mpz_t aux,a,b,r,p,q;
+	mpz_inits(aux,a,b,r,p,q);
 	
+	mpz_cdiv_r_ui(aux,n,2);
 	
-	/*
-	 * implementando
-	 */
-	
+	if(mpz_cmp_ui(aux,0)==0)
+		return false;
+	else{
+		
+	  //Calculando a e b
+		mpz_sqrt(aux,n);
+		mpz_add_ui(a, aux,1);
+		mpz_pow_ui(aux,a,2);
+		mpz_sub(b, aux,n);
+		
+		/*
+		 * Calculando o valor de b incrementado sucessivas vezes
+		 * até obter um b quadrado perfeito
+		 */
+		  
+		while((mpz_perfect_square_p(b)==0) && (mpz_cmp(a,n)<0)){
+			mpz_add_ui(a, a,1);
+			mpz_pow_ui(aux,a,2);
+			mpz_sub(b, aux,n);
+			}
+		mpz_sqrt(b,b);		
+		mpz_sub(p,a,b); // p = (a-b)
+		mpz_add(q,a,b); // q = (a+b)
+		
+		}
+		
+	return true;
 	}
