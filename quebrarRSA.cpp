@@ -1,20 +1,18 @@
 // Copyright (c) 2021, Pedro Quaresma <pedro@mat.uc.pt>
 
-
-#include <gmp.h>
-
-#include "cifraRSA.hpp"  
+// bibliotecas do sistem
 #include <iostream>
 #include <stdlib.h>
 
+// bibliotecas externas
+#include <gmp.h>
+
+// bibliotecas do projecto
+#include "factorizarPrimos.hpp"  
+
 using namespace std;
 
-
-
 int main(int argc, char *argv[]){
-
-
-  
 
   //verificar o número de argumento
   if(argc!=2){
