@@ -21,7 +21,7 @@ public:
    
   /*
    * Método das divisões - <descrição>
-   * -->
+   * --> 
    * <--
    */
   
@@ -37,7 +37,22 @@ public:
    * -->
    * <--
    */
-  void metodoFermat(mpz_t n);
+  bool metodoFermat(mpz_t n);
+
+  /*
+   * Força bruta
+   */ 
+
+  bool forcaBruta(mpz_t n);
+  
+  
+  /*
+   * Formula geradora: p =6k+_ 1
+   */ 
+  bool formulaGeradora(mpz_t n);
+   
 };
+
+
 
 #endif

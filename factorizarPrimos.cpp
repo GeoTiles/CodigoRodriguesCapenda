@@ -5,14 +5,14 @@
 
 #include <gmp.h>
 
-#include "factorizarPrimos"
+#include "factorizarPrimos.hpp"
 
 /*
  * Testa Primo - <descrição>
  * --> cand:mpz_t, <significado>
  * <-- bool, verdade se..., falso se ...
  */
-bool CifraRSA::testaPrimo(mpz_t cand){
+bool FactorizarPrimos::testaPrimo(mpz_t cand){
   
   mpz_t i, remain;
   mpz_inits (i, remain, NULL);
@@ -28,8 +28,9 @@ bool CifraRSA::testaPrimo(mpz_t cand){
 }
 
 /*
+ * Recebe um inteiro n e calcula os primos p e q pelo método de euclides
  */
-void  CifraRSA::metodoEuclides(mpz_t n){
+void  FactorizarPrimos::metodoEuclides(mpz_t n){
   mpz_t min,max,product,p,q;
   mpz_inits(min,max,product,p,q);
   
@@ -52,7 +53,7 @@ void  CifraRSA::metodoEuclides(mpz_t n){
 
 /*
  */
-bool CifraRSA::metodoFermat(mpz_t n){
+bool FactorizarPrimos::metodoFermat(mpz_t n){
 	mpz_t aux,a,b,r,p,q;
 	mpz_inits(aux,a,b,r,p,q);
 	
@@ -85,4 +86,71 @@ bool CifraRSA::metodoFermat(mpz_t n){
 		}
 		
 	return true;
+	}
+
+/*
+ * 
+ */ 
+bool FactorizarPrimos::forcaBruta(mpz_t n){
+	
+	mpz_t p,q,sqr,r; // sqr: armazena a sqrt(n); r: restos
+	bool encontrado = false;
+	mpz_inits(p,q,sqr,r);
+	mpz_set_ui(p,2);
+	mpz_sqrt(sqr,n);
+	
+	while(mpz_cmp(p,sqr)<=0 && !encontrado){
+		
+		if(testaPrimo(p)){
+			mpz_cdiv_qr(q,r,n,p);
+			if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
+					return true;
+				}else{
+					mpz_add_ui(p,p,1);
+					}
+			}else{
+				mpz_add_ui(p,p,1);
+				}
+		}
+	return false;	
+	}
+
+/*
+ *formulaGeradora: Calcula o  valor de P e que utilizando a fólmula p = 6k+_1
+ * -> n:mpz_t, GMP int (n da chave pública)
+ * <-- bool, verdade se..., falso se ...
+ * Calcula P pela formula gerado
+ */ 
+
+bool FactorizarPrimos::formulaGeradora(mpz_t n){
+	//ainda por revisar
+	
+	mpz_t p,q,sqr,r,k; // sqr: armazena a sqrt(n); r: restos
+	bool encontrado = false;
+	mpz_inits(p,q,sqr,r,k);
+	mpz_set_ui(p,2);
+	mpz_set_ui(k,0);
+	
+	while(mpz_cmp(p,sqr)<=0 && !encontrado){//combinou-se com o critério p<= sqrt(n)
+		mpz_add_ui(k,k,1);
+		if(testaPrimo(p+1)){
+			mpz_cdiv_qr(q,r,n,p);
+			if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
+					return true;
+				}else{
+					mpz_add_ui(k,k,1);
+					}
+			}else if(testaPrimo(p-1)){
+				mpz_cdiv_qr(q,r,n,p);
+				if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
+					return true;
+				}else{
+					mpz_add_ui(k,k,1);
+					}
+					
+				}else{
+					mpz_mul_ui(p,k,6);
+				}
+		}
+	return false;	
 	}
