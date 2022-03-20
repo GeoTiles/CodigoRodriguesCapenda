@@ -32,7 +32,7 @@ bool FactorizarPrimos::testaPrimo(mpz_t cand){
  */
 void  FactorizarPrimos::metodoEuclides(mpz_t n){
   mpz_t min,max,product,p,q;
-  mpz_inits(min,max,product,p,q);
+  mpz_inits(min,max,product,p,q,NULL);
   
   mpz_set_ui(min,3);
   mpz_sqrt(max,n);
@@ -47,7 +47,9 @@ void  FactorizarPrimos::metodoEuclides(mpz_t n){
     mpz_add_ui(min,min,1);
   }
   mpz_gcd (p,n,product);	
-  mpz_cdiv_q (q, n, p);	
+  mpz_cdiv_q (q, n, p);
+
+  gmp_printf("%Zd = %Zd*%Zd\n",n,p,q);
   
 }
 

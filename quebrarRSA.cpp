@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
 
   //Declaração das variáveis
   int op;
-  mpz_t n;
+  mpz_t n,i;
   
   FactorizarPrimos factorizador;
 
@@ -29,9 +29,18 @@ int main(int argc, char *argv[]){
   }
   
   mpz_init(n);
+  mpz_init(i);
   mpz_set_str(n,argv[1],10);
 
+  int aux;
+  while(1) {
+    cout << "aux=";
+    cin >> aux;
+    mpz_set_ui(i,aux);
+    if (factorizador.testaPrimo(i)) { cout << "\t é primo\n";}
+  }
 
+  
   t = clock(); // tempo inicial
   factorizador.metodoEuclides(n); // executar o método de Fermat
   t= clock()-t; // tempo total = tempo final - tempo inicial 
