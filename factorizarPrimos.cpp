@@ -7,150 +7,152 @@
 
 #include "factorizarPrimos.hpp"
 
-/*
- * Testa Primo - <descrição>
- * --> cand:mpz_t, <significado>
- * <-- bool, verdade se..., falso se ...
- */
-bool FactorizarPrimos::testaPrimo(mpz_t cand){
+
+
+void FactorizarPrimos::forcaBruta(const mpz_t n, mpz_t p, mpz_t q){
+  mpz_t res;
+
+  mpz_init(res);
+  mpz_init(p);
+  mpz_init(q);
+
+  mpz_set_ui(q, 2);
+  mpz_tdiv_r(res,n,q);
+
+  while (mpz_cmp_ui(res,0)!=0){
+    mpz_nextprime(q,q);
+    mpz_tdiv_r(res,n,q);}
+  mpz_tdiv_q(p,n,q);
+  gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n",n,p,q);
+
+  mpz_clear(res);
+  mpz_clear(p);
+  mpz_clear(q);
+}
+
+// Método de Fermat
+void FactorizarPrimos::metodoFermat(const mpz_t n, mpz_t p, mpz_t q){
+  mpz_t a;
+
+  mpz_init(a);
+  mpz_init(q);
+  mpz_init(p);
   
-  mpz_t i, remain;
-  mpz_inits (i, remain, NULL);
+  mpz_sqrt(a,n);
+  mpz_add_ui(a,a,1);
+  mpz_mul(q,a,a);
+  mpz_sub(q,q,n);
+  while(mpz_perfect_square_p(q)==0){
+    mpz_add_ui(a,a,1);
+    mpz_mul(q,a,a);
+    mpz_sub(q,q,n);
+  }
   
-  for (mpz_set_ui(i,2);mpz_cmp(i,cand-1) <= 0; mpz_add_ui(i, i, 1)) {
+  mpz_sqrt(q,q);
+  mpz_add(p,a,q);
+  mpz_sub(q,a,q);
+  
+  gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n", n, p,q); 
+
+  mpz_clear(a);
+  mpz_clear(p);
+  mpz_clear(q);
+}
+
+// Fórmula geradora
+void FactorizarPrimos::formulaGeradora(const mpz_t n, mpz_t p, mpz_t q){
+  mpz_t res1, res2, aux;
+
+  mpz_init (p);
+  mpz_init (q);
+  mpz_init(aux);
+  mpz_init(res1);
+  mpz_init(res2);
+
+  mpz_set_ui(p,1);
+  mpz_tdiv_r_ui(res1,n,2);
+  if(mpz_cmp_ui(res1,0)==0){
+    mpz_tdiv_q_ui(q,n,2);
+    gmp_printf("Os fatores primos de %Zd sao 2 e %Zd\n",n, q);
+  }
+  
+  mpz_tdiv_r_ui(res2,n,3);
+  if(mpz_cmp_ui(res2,0)==0){
+    mpz_tdiv_q_ui(q,n,3);
+    gmp_printf("Os fatores primos de %Zd sao 3 e %Zd\n",n, q);
+  }
+  
+  mpz_mul(aux,res1,res2);
+  if(mpz_cmp_ui(aux,0)!=0){
+    while(mpz_cmp_ui(aux,0)!=0){
+      mpz_add_ui(p,p,4);
+      mpz_tdiv_r(res1,n,p);
+      mpz_add_ui(p,p,2);
+      mpz_tdiv_r(res2,n, p);
+      mpz_mul(aux,res1,res2);
+    }
+    if(mpz_cmp_ui(res1,0)==0){
+      mpz_sub_ui(p,p,2);
+      mpz_tdiv_q(q,n,p);
+      gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n",n, p, q);
+    }
+    else {
+      mpz_tdiv_q(q,n,p);
+      gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n",n, p, q);
+    }
+  }
+
+  mpz_clear(p);
+  mpz_clear(q);
+  mpz_clear(res1);
+  mpz_clear(res2);
+  mpz_clear(aux);
+}
+
+// Método de Euclides
+void FactorizarPrimos::metodoEuclides(const mpz_t n, mpz_t p, mpz_t q){		
+  mpz_t paux, p_2, res; 	
+
+  mpz_init(paux);
+  mpz_init (p_2);	 
+  mpz_init (p);	 
+  mpz_init (q);	
+  mpz_init(res);	
+  mpz_set_ui(p_2, 2);
+  mpz_set_ui(q,1);	
+
+  while(mpz_cmp_ui(q,1)==0){
+    mpz_set(p, p_2);
+    mpz_nextprime(p_2,p_2);
+    mpz_mul(paux,p,p_2);
+    mpz_nextprime(p_2,p_2);
+    mpz_mul(paux,paux,p_2);		
+    mpz_nextprime(p_2,p_2);
+    mpz_mul(paux,paux,p_2);
+    mpz_nextprime(p_2,p_2);
+    mpz_mul(paux,paux,p_2);		
+    mpz_nextprime(p_2,p_2);
+    mpz_mul(paux,paux,p_2);	
+    mpz_gcd(q, paux, n);	
     
-    mpz_mod(remain,cand,i);
-    if (mpz_cmp_ui(remain,0) == 0) {
-      return false;
-    }
   }
-  return true;
-}
 
-/*
- * Recebe um inteiro n e calcula os primos p e q pelo método de euclides
- */
-void  FactorizarPrimos::metodoEuclides(mpz_t n){
-  mpz_t min,max,product,p,q;
-  mpz_inits(min,max,product,p,q);
-  
-  mpz_set_ui(min,3);
-  mpz_sqrt(max,n);
-  mpz_set_ui(product,1);
-  
-  while(mpz_cmp(min,max)<0){ 
-    if(testaPrimo(min)){
-      mpz_mul(product,product,min);
-    } else {
-      mpz_add_ui(min,min,1);
+  if(mpz_cmp(q,n)!=0) {
+      mpz_tdiv_q(p,n,q);
+      gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n",n, p, q);}
+  else {
+    mpz_tdiv_r(res,n, p);
+    while(mpz_cmp_ui(res,0)!=0){
+      mpz_nextprime(p,p);
+      mpz_tdiv_r(res,n, p);		     		
     }
-    mpz_add_ui(min,min,1);
+    mpz_tdiv_q(q,n,p);
+    gmp_printf("Os fatores primos de %Zd sao %Zd e %Zd\n",n, p, q);
   }
-  mpz_gcd (p,n,product);	
-  mpz_cdiv_q (q, n, p);	
-  
-}
 
-/*
- */
-bool FactorizarPrimos::metodoFermat(mpz_t n){
-	mpz_t aux,a,b,r,p,q;
-	mpz_inits(aux,a,b,r,p,q);
-	
-	mpz_cdiv_r_ui(aux,n,2);
-	
-	if(mpz_cmp_ui(aux,0)==0)
-		return false;
-	else{
-		
-	  //Calculando a e b
-		mpz_sqrt(aux,n);
-		mpz_add_ui(a, aux,1);
-		mpz_pow_ui(aux,a,2);
-		mpz_sub(b, aux,n);
-		
-		/*
-		 * Calculando o valor de b incrementado sucessivas vezes
-		 * até obter um b quadrado perfeito
-		 */
-		  
-		while((mpz_perfect_square_p(b)==0) && (mpz_cmp(a,n)<0)){
-			mpz_add_ui(a, a,1);
-			mpz_pow_ui(aux,a,2);
-			mpz_sub(b, aux,n);
-			}
-		mpz_sqrt(b,b);		
-		mpz_sub(p,a,b); // p = (a-b)
-		mpz_add(q,a,b); // q = (a+b)
-		
-		}
-		
-	return true;
-	}
-
-/*
- * 
- */ 
-bool FactorizarPrimos::forcaBruta(mpz_t n){
-	
-	mpz_t p,q,sqr,r; // sqr: armazena a sqrt(n); r: restos
-	bool encontrado = false;
-	mpz_inits(p,q,sqr,r);
-	mpz_set_ui(p,2);
-	mpz_sqrt(sqr,n);
-	
-	while(mpz_cmp(p,sqr)<=0 && !encontrado){
-		
-		if(testaPrimo(p)){
-			mpz_cdiv_qr(q,r,n,p);
-			if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
-					return true;
-				}else{
-					mpz_add_ui(p,p,1);
-					}
-			}else{
-				mpz_add_ui(p,p,1);
-				}
-		}
-	return false;	
-	}
-
-/*
- *formulaGeradora: Calcula o  valor de P e que utilizando a fólmula p = 6k+_1
- * -> n:mpz_t, GMP int (n da chave pública)
- * <-- bool, verdade se..., falso se ...
- * Calcula P pela formula gerado
- */ 
-
-bool FactorizarPrimos::formulaGeradora(mpz_t n){
-	//ainda por revisar
-	
-	mpz_t p,q,sqr,r,k; // sqr: armazena a sqrt(n); r: restos
-	bool encontrado = false;
-	mpz_inits(p,q,sqr,r,k);
-	mpz_set_ui(p,2);
-	mpz_set_ui(k,0);
-	
-	while(mpz_cmp(p,sqr)<=0 && !encontrado){//combinou-se com o critério p<= sqrt(n)
-		mpz_add_ui(k,k,1);
-		if(testaPrimo(p+1)){
-			mpz_cdiv_qr(q,r,n,p);
-			if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
-					return true;
-				}else{
-					mpz_add_ui(k,k,1);
-					}
-			}else if(testaPrimo(p-1)){
-				mpz_cdiv_qr(q,r,n,p);
-				if(mpz_cmp_ui(r,0)==0 || testaPrimo(q)){
-					return true;
-				}else{
-					mpz_add_ui(k,k,1);
-					}
-					
-				}else{
-					mpz_mul_ui(p,k,6);
-				}
-		}
-	return false;	
-	}
+  mpz_clear(paux);
+  mpz_clear(p);
+  mpz_clear(p_2);
+  mpz_clear(q);
+  mpz_clear(res);
+}	

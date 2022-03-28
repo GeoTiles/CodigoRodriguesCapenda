@@ -20,8 +20,5 @@ desencriptarRSA: desencriptarRSA.cpp $(CIFRA)
 quebrarRSA: quebrarRSA.cpp $(FACTORIZAR)
 	$(CC) -o $@ $@.cpp  $(FACTORIZAR) -l$(LIBS)
 
-testaPrimo: testaPrimo.cpp $(FACTORIZAR)
-	$(CC) -o $@ $@.cpp  $(FACTORIZAR) -l$(LIBS)
-
 clean:
 	rm -f  encriptarRSA desencriptarRSA geraChavesRSA chavePublica chavePrivada *.o
