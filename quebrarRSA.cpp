@@ -48,13 +48,14 @@ int main(int argc, char *argv[]){
   cout << "tempo usado método de Fermat: " << cpu_time_used << endl;
 
   // Fórmula Geradora 6k+-1
+  /*
   t= clock();   // tempo inicial
   factores.formulaGeradora(n,p,q);
   t= clock()-t; // tempo total = tempo final - tempo inicial 
   cpu_time_used = ((double)t) / CLOCKS_PER_SEC; 
   cout << "tempo usado fórmula geradora: " << cpu_time_used << endl;
   t= clock();
-  /*
+  
   // Método de Euclides
   t= clock();   // tempo inicial
   factores.metodoEuclides(n,p,q);
@@ -89,13 +90,34 @@ Gerar chaves públicas de n bits
  41615198928269563
 64 bits - Força Bruta: 1064.85s
  18060848976177946303
-72 bits
+
+Já só os métodos de Fermat e Fórmula Geradora
+
+72 bits - Fórmula geradora: 48.6383
  4427362412524367531927
-80 bits
+
+ Já só o método de Fermat
+
+80 bits - Fórmula geradora:  Método Fermat: 1.087
  1190096951745269742231019
+88 - Método Fermat: 0.016568 (neste caso, os primos são próximos)
+ 309336033988791048104598043
+92 - Método Fermat: 4.4e-05 (neste caso, os primos são próximos)
+ 4951740972530921398748578001
+100 - Método Fermat: desisti antes do programa terminar
+ 1148503743270544354118571979439
+108 - Método Fermat: não cheguei a testar
+ 304161867794397221831480180580221
+
+? talvez já só para o crivo quadrático
 
 128 bits
  339119943716719321666552368520142215723
- 333987964804260144402931254225994218101
+
+Também não cosegui quebrar a sua chave pública. Vou agora colocar o
+meu computador (que é novo) a «pensar» no assunto, amanhã já devo ter
+um resultado :)
+
 
 */
+
