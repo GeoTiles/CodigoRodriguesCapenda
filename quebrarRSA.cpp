@@ -34,12 +34,12 @@ int main(int argc, char *argv[]){
   mpz_set_str(n,argv[1],10);
 
   // Força Bruta
-  /*t = clock(); // tempo inicial
+  t = clock(); // tempo inicial
   factores.forcaBruta(n,p,q);
   t= clock()-t; // tempo total = tempo final - tempo inicial 
   cpu_time_used = ((double)t) / CLOCKS_PER_SEC; 
   cout << "tempo usado método da Força Bruta: " << cpu_time_used << endl;
-  */
+ 
   // Método Fermat
   t = clock(); // tempo inicial
   factores.metodoFermat(n,p,q);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
   cout << "tempo usado método de Fermat: " << cpu_time_used << endl;
 
   // Fórmula Geradora 6k+-1
-  /*
+
   t= clock();   // tempo inicial
   factores.formulaGeradora(n,p,q);
   t= clock()-t; // tempo total = tempo final - tempo inicial 
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]){
   cpu_time_used = ((double)t) / CLOCKS_PER_SEC; 
   cout << "tempo usado, Método de Euclides: " << cpu_time_used << endl;
   t= clock();
-  */
+
   return(0);  
 }
 
@@ -118,6 +118,8 @@ Também não cosegui quebrar a sua chave pública. Vou agora colocar o
 meu computador (que é novo) a «pensar» no assunto, amanhã já devo ter
 um resultado :)
 
+chavePublicaRC
+9685838245833144843186391
 
 */
 
