@@ -104,22 +104,22 @@ Já só os métodos de Fermat e Fórmula Geradora
  309336033988791048104598043
 92 - Método Fermat: 4.4e-05 (neste caso, os primos são próximos)
  4951740972530921398748578001
-100 - Método Fermat: desisti antes do programa terminar
+100 - Método Fermat: desisti antes do programa terminar --> gentzen
  1148503743270544354118571979439
-108 - Método Fermat: não cheguei a testar
+108 - Método Fermat: não cheguei a testar --> gentzen
  304161867794397221831480180580221
 
 ? talvez já só para o crivo quadrático
 
 128 bits
- 339119943716719321666552368520142215723
+ 339119943716719321666552368520142215723 --> gentzen
 
 Também não cosegui quebrar a sua chave pública. Vou agora colocar o
 meu computador (que é novo) a «pensar» no assunto, amanhã já devo ter
 um resultado :)
 
 chavePublicaRC
-9685838245833144843186391
+9685838245833144843186391 --> gentzen
 
 */
 
