@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package quadraticsieve;
-
+import java.math.*;
 
 /**
  *
@@ -35,6 +35,12 @@ public class Primes {
         }
         return (count == 1);
 
+    }
+    
+    public static BigInteger legendreSymbol(BigInteger n, int p) {
+        n = n.pow((int)((p-1)/2));
+        n = n.mod(BigInteger.valueOf(p));
+        return n;
     }
 
 }

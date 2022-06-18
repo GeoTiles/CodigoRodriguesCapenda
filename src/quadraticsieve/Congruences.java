@@ -15,17 +15,27 @@ import java.math.BigInteger;
  */
 public class Congruences {
 
-    BigInteger number;
+    BigInteger r, fr;
     int congruence;
     ArrayList<Factors> factors;
 
-    public BigInteger getNumber() {
-        return number;
+    public BigInteger getR() {
+        return r;
     }
 
-    public void setNumber(BigInteger number) {
-        this.number = number;
+    public void setR(BigInteger r) {
+        this.r = r;
     }
+
+    public BigInteger getFr() {
+        return fr;
+    }
+
+    public void setFr(BigInteger fr) {
+        this.fr = fr;
+    }
+
+    
 
     public int getCongruence() {
         return congruence;
@@ -59,8 +69,7 @@ public class Congruences {
             aux.add(new Factors(e.getBase(), count));
         });
         //removendo repetições
-        aux1 = aux;
-        
+        aux1 = aux;     
         
         
         return aux1;
@@ -97,6 +106,15 @@ public class Congruences {
             }
         }
         this.factors.add(new Factors(aux, cont));
-        this.setNumber(product);
+       
     }
+
+    public Congruences(BigInteger r, BigInteger fr, ArrayList<Factors> factors) {
+        this.r = r;
+        this.fr = fr;
+        this.factors = factors;
+    }
+
+    
+    
 }
